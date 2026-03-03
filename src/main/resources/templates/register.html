@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CookieGram — Create account</title>
+  <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+<body>
+  <div class="auth-wrap">
+    <section class="brand">
+      <div class="badge">🍪 <span>Future Sprint Feature</span></div>
+      <h1>Create an account</h1>
+      <p>
+        Sprint 1 mock page. In later sprints this will save users to a database,
+        validate email, and assign roles securely.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Account setup (Mock)</h2>
+      <p class="sub">This is a UI placeholder for the client demo.</p>
+
+      <div class="field">
+        <label>Name</label>
+        <input placeholder="Jane Doe" disabled>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input placeholder="jane@email.com" disabled>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input placeholder="••••••••" disabled>
+      </div>
+
+      <button class="btn" type="button" disabled>Create account</button>
+
+      <div class="footer">
+        <a class="link" th:href="@{/login}">Back to login</a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

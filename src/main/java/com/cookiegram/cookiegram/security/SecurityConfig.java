@@ -15,25 +15,25 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/css/**", "/images/**", "/js/**").permitAll()
-                .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                .requestMatchers("/employee/**").hasRole("EMPLOYEE")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/post-login", true)
-                .permitAll()
-            )
-            .logout(logout -> logout.permitAll());
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/login", "/register", "/forgot-password",
+                             "/css/**", "/images/**", "/js/**").permitAll()
+            .requestMatchers("/customer/**").hasRole("CUSTOMER")
+            .requestMatchers("/employee/**").hasRole("EMPLOYEE")
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        )
+        .formLogin(form -> form
+            .loginPage("/login")
+            .defaultSuccessUrl("/post-login", true)
+            .permitAll()
+        )
+        .logout(logout -> logout.permitAll());
 
-        return http.build();
-    }
-
+    return http.build();
+}
     @Bean
     public UserDetailsService users(PasswordEncoder encoder) {
 

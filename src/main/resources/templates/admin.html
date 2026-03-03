@@ -1,7 +1,112 @@
-<h1>Admin Dashboard</h1>
-<ul>
-  <li>User management</li>
-  <li>System monitoring</li>
-  <li>Promotions management (future)</li>
-</ul>
-<a href="/logout">Logout</a>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin Dashboard - CookieGram</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{ --cg-orange:#f97316; --cg-brown:#4b2e2b; }
+    .brand{ color: var(--cg-orange); }
+  </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand bg-white border-bottom">
+  <div class="container py-2">
+    <a class="navbar-brand fw-bold" href="/">Cookie<span class="brand">Gram</span></a>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-dark btn-sm" href="/">Home</a>
+      <form th:action="@{/logout}" method="post" class="m-0">
+        <button class="btn btn-warning btn-sm fw-semibold" type="submit">Logout</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-4">
+
+  <div class="p-4 bg-white border rounded-4 shadow-sm mb-4">
+    <h1 class="fw-bold mb-1" style="color:var(--cg-brown);">Admin Dashboard (Vision)</h1>
+    <p class="text-muted mb-0">
+      Sprint 1 placeholder — shows the admin control panel for future sprints (users, promos, reporting, system health).
+    </p>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Total Orders (30 days)</h6>
+          <div class="display-6 fw-bold">248</div>
+          <p class="text-muted mb-0">Future: real analytics dashboard.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Active Promotions</h6>
+          <div class="display-6 fw-bold">3</div>
+          <p class="text-muted mb-0">Future: create/edit promos from UI.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-muted">System Health</h6>
+          <div class="display-6 fw-bold">OK</div>
+          <p class="text-muted mb-0">Future: error logs + uptime metrics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h5 class="fw-bold mb-0">Admin Tools (Future)</h5>
+        <span class="badge text-bg-light border">Not functional in Sprint 1</span>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+          <div class="border rounded-3 p-3 bg-white h-100">
+            <h6 class="fw-bold">User & Role Management</h6>
+            <p class="text-muted small">Create accounts, assign roles, deactivate users.</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Manage Users</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="border rounded-3 p-3 bg-white h-100">
+            <h6 class="fw-bold">Promotions Management</h6>
+            <p class="text-muted small">Add/edit promotions without code changes.</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Edit Promotions</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="border rounded-3 p-3 bg-white h-100">
+            <h6 class="fw-bold">Reporting</h6>
+            <p class="text-muted small">Sales reports, order volume, delivery stats.</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>View Reports</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="border rounded-3 p-3 bg-white h-100">
+            <h6 class="fw-bold">Audit & Logs</h6>
+            <p class="text-muted small">Track changes, errors, and system events.</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>View Logs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-warning border">
+    <strong>Future Sprint Note:</strong> Admin tools will become functional once database entities, repositories, and CRUD pages are implemented.
+  </div>
+
+</div>
+</body>
+</html>

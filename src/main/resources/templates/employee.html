@@ -1,7 +1,112 @@
-<h1>Employee Dashboard</h1>
-<ul>
-  <li>Orders to bake today</li>
-  <li>Orders pending shipment</li>
-  <li>Order status updates (Pending → Baked → Shipped)</li>
-</ul>
-<a href="/logout">Logout</a>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Employee Dashboard - CookieGram</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{ --cg-orange:#f97316; --cg-brown:#4b2e2b; }
+    .brand{ color: var(--cg-orange); }
+  </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand bg-white border-bottom">
+  <div class="container py-2">
+    <a class="navbar-brand fw-bold" href="/">Cookie<span class="brand">Gram</span></a>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-dark btn-sm" href="/">Home</a>
+      <form th:action="@{/logout}" method="post" class="m-0">
+        <button class="btn btn-warning btn-sm fw-semibold" type="submit">Logout</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-4">
+
+  <div class="p-4 bg-white border rounded-4 shadow-sm mb-4">
+    <h1 class="fw-bold mb-1" style="color:var(--cg-brown);">Employee Dashboard (Vision)</h1>
+    <p class="text-muted mb-0">
+      Sprint 1 placeholder — shows what employees will use to manage cookie orders in future sprints.
+    </p>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Orders to Bake Today</h6>
+          <div class="display-6 fw-bold">12</div>
+          <p class="text-muted mb-0">Future: filtered by pickup/shipping deadlines.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Ready for Packaging</h6>
+          <div class="display-6 fw-bold">6</div>
+          <p class="text-muted mb-0">Future: scan labels + confirm packaging.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Shipping Problems</h6>
+          <div class="display-6 fw-bold">2</div>
+          <p class="text-muted mb-0">Future: address errors, delivery holds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="fw-bold mb-0">Today’s Workflow (Future)</h5>
+        <span class="badge text-bg-light border">Not functional in Sprint 1</span>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-3">
+          <div class="border rounded-3 p-3 bg-white">
+            <h6 class="fw-bold mb-1">Pending</h6>
+            <p class="text-muted mb-2 small">Orders awaiting bake</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>View Queue</button>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="border rounded-3 p-3 bg-white">
+            <h6 class="fw-bold mb-1">Baking</h6>
+            <p class="text-muted mb-2 small">In production</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Start Batch</button>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="border rounded-3 p-3 bg-white">
+            <h6 class="fw-bold mb-1">Ready</h6>
+            <p class="text-muted mb-2 small">Ready for packing</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Print Labels</button>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="border rounded-3 p-3 bg-white">
+            <h6 class="fw-bold mb-1">Shipped</h6>
+            <p class="text-muted mb-2 small">Handed to courier</p>
+            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Confirm Shipment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-warning border">
+    <strong>Future Sprint Note:</strong> This dashboard will connect to real orders, statuses, and shipment updates once database + order flows are implemented.
+  </div>
+
+</div>
+</body>
+</html>

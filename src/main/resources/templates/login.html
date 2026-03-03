@@ -1,29 +1,57 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CookieGram — Sign in</title>
+  <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body>
+  <div class="auth-wrap">
+    <section class="brand">
+      <div class="badge">🍪 <span>CookieGram — Sprint 1</span></div>
+      <h1>Send a message cookie.</h1>
+      <p>
+        A simple order management system that reduces mistakes, keeps orders on track,
+        and shows real-time promotions pulled from the server.
+      </p>
 
-<h2>Login</h2>
+      <div class="promo">
+        <strong>Today’s Highlight:</strong> Dynamic promotions + role-based dashboards (Customer / Employee / Admin).
+      </div>
+    </section>
 
-<div th:if="${param.error}">
-    <p style="color:red;">Invalid credentials</p>
-</div>
+    <section class="card">
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to continue to your dashboard.</p>
 
-<form th:action="@{/login}" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
-    </div>
+      <div th:if="${param.error}" class="alert">
+        Invalid username or password.
+      </div>
 
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-    </div>
+      <form th:action="@{/login}" method="post">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" placeholder="customer / employee / admin" required />
+        </div>
 
-    <button type="submit">Login</button>
-</form>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="pass" required />
+        </div>
 
+        <div class="row">
+          <a class="link" th:href="@{/forgot-password}">Forgot password?</a>
+          <a class="link" th:href="@{/register}">Create account</a>
+        </div>
+
+        <button class="btn" type="submit">Sign in</button>
+      </form>
+
+      <div class="footer">
+        Demo accounts: <strong>customer</strong>, <strong>employee</strong>, <strong>admin</strong> (password: <strong>pass</strong>)
+      </div>
+    </section>
+  </div>
 </body>
 </html>
