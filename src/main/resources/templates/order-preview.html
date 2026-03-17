@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Preview Order - CookieGram</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container my-5">
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h1 class="fw-bold mb-3">Order Preview</h1>
+
+          <table class="table">
+            <tr><th>Cookie</th><td th:text="${orderForm.cookieType.displayName}"></td></tr>
+            <tr><th>Recipient</th><td th:text="${orderForm.recipientName}"></td></tr>
+            <tr><th>Message</th><td th:text="${orderForm.customMessage}"></td></tr>
+            <tr><th>Sprinkles</th><td th:text="${orderForm.sprinkles ? 'Yes' : 'No'}"></td></tr>
+            <tr><th>Quantity</th><td th:text="${orderForm.quantity}"></td></tr>
+            <tr><th>Address</th><td th:text="${orderForm.deliveryAddress}"></td></tr>
+            <tr class="table-warning fw-bold"><th>Total</th><td th:text="'$' + ${totalPrice}"></td></tr>
+          </table>
+
+          <form th:action="@{/customer/orders/place}" method="post" class="d-flex gap-2">
+            <input type="hidden" name="cookieType" th:value="${orderForm.cookieType}">
+            <input type="hidden" name="customMessage" th:value="${orderForm.customMessage}">
+            <input type="hidden" name="sprinkles" th:value="${orderForm.sprinkles}">
+            <input type="hidden" name="quantity" th:value="${orderForm.quantity}">
+            <input type="hidden" name="recipientName" th:value="${orderForm.recipientName}">
+            <input type="hidden" name="deliveryAddress" th:value="${orderForm.deliveryAddress}">
+
+            <button type="submit" class="btn btn-warning fw-semibold">Place Order</button>
+            <a href="/customer/orders/new" class="btn btn-outline-dark">Edit Order</a>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h4 class="fw-bold mb-3">Cookie Message Preview</h4>
+          <div class="border rounded p-5 bg-light text-center">
+            <div class="fw-bold fs-4 mb-2" th:text="${orderForm.cookieType.displayName}"></div>
+            <div class="display-6 fw-bold text-warning" th:text="${orderForm.customMessage}"></div>
+            <div class="text-muted mt-3" th:text="${orderForm.sprinkles ? 'With sprinkles' : 'No sprinkles'}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

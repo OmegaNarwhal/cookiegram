@@ -25,88 +25,59 @@
 </nav>
 
 <div class="container my-4">
-
   <div class="p-4 bg-white border rounded-4 shadow-sm mb-4">
-    <h1 class="fw-bold mb-1" style="color:var(--cg-brown);">Employee Dashboard (Vision)</h1>
-    <p class="text-muted mb-0">
-      Sprint 1 placeholder — shows what employees will use to manage cookie orders in future sprints.
-    </p>
+    <h1 class="fw-bold mb-1" style="color:var(--cg-brown);">Employee Order Dashboard</h1>
+    <p class="text-muted mb-0">Manage incoming cookie orders and update their status.</p>
   </div>
 
-  <div class="row g-3 mb-3">
-    <div class="col-md-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h6 class="text-muted">Orders to Bake Today</h6>
-          <div class="display-6 fw-bold">12</div>
-          <p class="text-muted mb-0">Future: filtered by pickup/shipping deadlines.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h6 class="text-muted">Ready for Packaging</h6>
-          <div class="display-6 fw-bold">6</div>
-          <p class="text-muted mb-0">Future: scan labels + confirm packaging.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h6 class="text-muted">Shipping Problems</h6>
-          <div class="display-6 fw-bold">2</div>
-          <p class="text-muted mb-0">Future: address errors, delivery holds.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card shadow-sm mb-3">
+  <div class="card shadow-sm">
     <div class="card-body">
-      <div class="d-flex align-items-center justify-content-between">
-        <h5 class="fw-bold mb-0">Today’s Workflow (Future)</h5>
-        <span class="badge text-bg-light border">Not functional in Sprint 1</span>
+      <div th:if="${orders == null || orders.isEmpty()}" class="alert alert-light border mb-0">
+        No orders have been placed yet.
       </div>
 
-      <div class="row g-3 mt-1">
-        <div class="col-md-3">
-          <div class="border rounded-3 p-3 bg-white">
-            <h6 class="fw-bold mb-1">Pending</h6>
-            <p class="text-muted mb-2 small">Orders awaiting bake</p>
-            <button class="btn btn-outline-secondary btn-sm w-100" disabled>View Queue</button>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="border rounded-3 p-3 bg-white">
-            <h6 class="fw-bold mb-1">Baking</h6>
-            <p class="text-muted mb-2 small">In production</p>
-            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Start Batch</button>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="border rounded-3 p-3 bg-white">
-            <h6 class="fw-bold mb-1">Ready</h6>
-            <p class="text-muted mb-2 small">Ready for packing</p>
-            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Print Labels</button>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="border rounded-3 p-3 bg-white">
-            <h6 class="fw-bold mb-1">Shipped</h6>
-            <p class="text-muted mb-2 small">Handed to courier</p>
-            <button class="btn btn-outline-secondary btn-sm w-100" disabled>Confirm Shipment</button>
-          </div>
-        </div>
+      <div th:if="${orders != null && !orders.isEmpty()}" class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Customer</th>
+              <th>Cookie</th>
+              <th>Message</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Update</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="order : ${orders}">
+              <td th:text="${order.id}"></td>
+              <td th:text="${order.customerUsername}"></td>
+              <td th:text="${order.cookieType.displayName}"></td>
+              <td th:text="${order.customMessage}"></td>
+              <td th:text="${order.quantity}"></td>
+              <td th:text="'$' + ${order.totalPrice}"></td>
+              <td><span class="badge bg-secondary" th:text="${order.status}"></span></td>
+              <td>
+                <form th:action="@{'/employee/orders/' + ${order.id} + '/status'}" method="post" class="d-flex gap-2">
+                  <select name="status" class="form-select form-select-sm">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status}"
+                            th:text="${status}"
+                            th:selected="${status == order.status}">
+                    </option>
+                  </select>
+                  <button type="submit" class="btn btn-warning btn-sm fw-semibold">Save</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-
-  <div class="alert alert-warning border">
-    <strong>Future Sprint Note:</strong> This dashboard will connect to real orders, statuses, and shipment updates once database + order flows are implemented.
-  </div>
-
 </div>
+
 </body>
 </html>
