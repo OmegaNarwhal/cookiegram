@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
 
 public class CookieOrderForm {
 
@@ -26,6 +27,10 @@ public class CookieOrderForm {
 
     @NotBlank(message = "Delivery address is required.")
     private String deliveryAddress;
+
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Please enter a valid email address.")
+    private String customerEmail;
 
     public CookieType getCookieType() {
         return cookieType;
@@ -73,5 +78,13 @@ public class CookieOrderForm {
 
     public void setDeliveryAddress(String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
+    }
+
+    public String getCustomerEmail() {
+    return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+    this.customerEmail = customerEmail;
     }
 }

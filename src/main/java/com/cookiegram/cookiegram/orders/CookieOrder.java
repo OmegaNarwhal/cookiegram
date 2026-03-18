@@ -52,6 +52,9 @@ public class CookieOrder {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private String customerEmail;
+
     public CookieOrder() {
     }
 
@@ -138,4 +141,12 @@ public class CookieOrder {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public String getCustomerEmail() {
+    return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+    this.customerEmail = customerEmail;
+}
 }

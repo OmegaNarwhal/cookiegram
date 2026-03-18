@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: cookiegram-db
+    environment:
+      POSTGRES_DB: cookiegram
+      POSTGRES_USER: cookiegram_user
+      POSTGRES_PASSWORD: cookiegram_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: cookiegram-app
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/cookiegram
+      SPRING_DATASOURCE_USERNAME: cookiegram_user
+      SPRING_DATASOURCE_PASSWORD: cookiegram_pass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_MAIL_HOST: sandbox.smtp.mailtrap.io
+      SPRING_MAIL_PORT: 2525
+      SPRING_MAIL_USERNAME: f516c3b3389f71
+      SPRING_MAIL_PASSWORD: 4e82e8e48852d0
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+
+volumes:
+  postgres_data:

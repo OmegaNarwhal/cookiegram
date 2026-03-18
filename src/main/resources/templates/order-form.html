@@ -59,6 +59,14 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label fw-semibold">Customer Email</label>
+            <input type="email" class="form-control" th:field="*{customerEmail}" placeholder="you@example.com">
+            <div class="text-danger small mt-1"
+            th:if="${#fields.hasErrors('customerEmail')}"
+            th:errors="*{customerEmail}"></div>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label fw-semibold">Delivery Address</label>
           <textarea class="form-control" th:field="*{deliveryAddress}" rows="3"></textarea>
           <div class="text-danger small mt-1" th:if="${#fields.hasErrors('deliveryAddress')}" th:errors="*{deliveryAddress}"></div>

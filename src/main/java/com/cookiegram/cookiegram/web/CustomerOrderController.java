@@ -1,5 +1,6 @@
 package com.cookiegram.cookiegram.web;
 
+import com.cookiegram.cookiegram.email.EmailService;
 import com.cookiegram.cookiegram.orders.CookieOrder;
 import com.cookiegram.cookiegram.orders.CookieOrderForm;
 import com.cookiegram.cookiegram.orders.CookieOrderService;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerOrderController {
 
     private final CookieOrderService cookieOrderService;
+    private final EmailService emailService;
 
-    public CustomerOrderController(CookieOrderService cookieOrderService) {
+    public CustomerOrderController(CookieOrderService cookieOrderService, EmailService emailService) {
         this.cookieOrderService = cookieOrderService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/new")
@@ -48,7 +51,16 @@ public class CustomerOrderController {
     public String placeOrder(@ModelAttribute("orderForm") CookieOrderForm form,
                              Authentication authentication,
                              Model model) {
+
         CookieOrder placedOrder = cookieOrderService.placeOrder(form, authentication.getName());
+
+        try {
+            emailService.sendOrderConfirmationEmail(placedOrder);
+            model.addAttribute("emailSent", true);
+        } catch (Exception e) {
+            model.addAttribute("emailSent", false);
+        }
+
         model.addAttribute("order", placedOrder);
         return "order-confirmation";
     }

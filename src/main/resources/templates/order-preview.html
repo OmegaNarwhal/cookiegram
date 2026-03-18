@@ -17,6 +17,7 @@
 
           <table class="table">
             <tr><th>Cookie</th><td th:text="${orderForm.cookieType.displayName}"></td></tr>
+            <tr><th>Email</th><td th:text="${orderForm.customerEmail}"></td></tr> 
             <tr><th>Recipient</th><td th:text="${orderForm.recipientName}"></td></tr>
             <tr><th>Message</th><td th:text="${orderForm.customMessage}"></td></tr>
             <tr><th>Sprinkles</th><td th:text="${orderForm.sprinkles ? 'Yes' : 'No'}"></td></tr>
@@ -32,6 +33,7 @@
             <input type="hidden" name="quantity" th:value="${orderForm.quantity}">
             <input type="hidden" name="recipientName" th:value="${orderForm.recipientName}">
             <input type="hidden" name="deliveryAddress" th:value="${orderForm.deliveryAddress}">
+            <input type="hidden" name="customerEmail" th:value="${orderForm.customerEmail}"> 
 
             <button type="submit" class="btn btn-warning fw-semibold">Place Order</button>
             <a href="/customer/orders/new" class="btn btn-outline-dark">Edit Order</a>

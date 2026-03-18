@@ -5,40 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CookieGram — Create account</title>
   <link rel="stylesheet" th:href="@{/css/auth.css}">
+  <style>
+    .error { color: #b91c1c; font-size: 0.9rem; margin-top: 0.25rem; }
+    .success { color: #166534; }
+    .field { margin-bottom: 1rem; }
+    .field input { width: 100%; padding: 0.75rem; }
+    .btn { width: 100%; padding: 0.9rem; }
+  </style>
 </head>
 <body>
   <div class="auth-wrap">
     <section class="brand">
-      <div class="badge">🍪 <span>Future Sprint Feature</span></div>
+      <div class="badge">🍪 <span>Create your CookieGram account</span></div>
       <h1>Create an account</h1>
-      <p>
-        Sprint 1 mock page. In later sprints this will save users to a database,
-        validate email, and assign roles securely.
-      </p>
+      <p>Register as a customer to place and track cookiegram orders.</p>
     </section>
 
     <section class="card">
-      <h2>Account setup (Mock)</h2>
-      <p class="sub">This is a UI placeholder for the client demo.</p>
+      <h2>Account setup</h2>
+      <p class="sub">Create your customer account below.</p>
 
-      <div class="field">
-        <label>Name</label>
-        <input placeholder="Jane Doe" disabled>
-      </div>
+      <div th:if="${registerError}" class="error" th:text="${registerError}"></div>
 
-      <div class="field">
-        <label>Email</label>
-        <input placeholder="jane@email.com" disabled>
-      </div>
+      <form th:action="@{/register}" th:object="${registerForm}" method="post">
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" th:field="*{fullName}" placeholder="Jane Doe">
+          <div class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+        </div>
 
-      <div class="field">
-        <label>Password</label>
-        <input placeholder="••••••••" disabled>
-      </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" th:field="*{email}" placeholder="jane@email.com">
+          <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
 
-      <button class="btn" type="button" disabled>Create account</button>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" th:field="*{password}" placeholder="••••••••">
+          <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
 
-      <div class="footer">
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" th:field="*{confirmPassword}" placeholder="••••••••">
+          <div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+        </div>
+
+        <button class="btn" type="submit">Create account</button>
+      </form>
+
+      <div class="footer" style="margin-top: 1rem;">
         <a class="link" th:href="@{/login}">Back to login</a>
       </div>
     </section>

@@ -33,6 +33,7 @@ public class CookieOrderService {
     public CookieOrder placeOrder(CookieOrderForm form, String username) {
         CookieOrder order = new CookieOrder();
         order.setCustomerUsername(username);
+        order.setCustomerEmail(form.getCustomerEmail());
         order.setCookieType(form.getCookieType());
         order.setCustomMessage(form.getCustomMessage());
         order.setSprinkles(form.isSprinkles());
@@ -42,6 +43,7 @@ public class CookieOrderService {
         order.setTotalPrice(calculatePrice(form));
         order.setStatus(OrderStatus.PENDING);
         order.setCreatedAt(LocalDateTime.now());
+        
 
         return cookieOrderRepository.save(order);
     }
