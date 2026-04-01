@@ -1,11 +1,7 @@
 package com.cookiegram.cookiegram.orders;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.*;
+import java.time.LocalDate;
 
 public class CookieOrderForm {
 
@@ -31,6 +27,24 @@ public class CookieOrderForm {
     @NotBlank(message = "Email is required.")
     @Email(message = "Please enter a valid email address.")
     private String customerEmail;
+
+    @NotNull(message = "Delivery date is required.")
+    private LocalDate deliveryDate;
+
+    @NotBlank(message = "Please select a payment method.")
+    private String paymentMethod;
+
+    @NotBlank(message = "Cardholder name is required.")
+    private String cardholderName;
+
+    @NotBlank(message = "Card number is required.")
+    private String mockCardNumber;
+
+    @NotBlank(message = "Expiry date is required.")
+    private String expiryDate;
+
+    @NotBlank(message = "CVV is required.")
+    private String cvv;
 
     public CookieType getCookieType() {
         return cookieType;
@@ -81,10 +95,58 @@ public class CookieOrderForm {
     }
 
     public String getCustomerEmail() {
-    return customerEmail;
+        return customerEmail;
     }
 
     public void setCustomerEmail(String customerEmail) {
-    this.customerEmail = customerEmail;
+        this.customerEmail = customerEmail;
+    }
+
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getCardholderName() {
+        return cardholderName;
+    }
+
+    public void setCardholderName(String cardholderName) {
+        this.cardholderName = cardholderName;
+    }
+
+    public String getMockCardNumber() {
+        return mockCardNumber;
+    }
+
+    public void setMockCardNumber(String mockCardNumber) {
+        this.mockCardNumber = mockCardNumber;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
     }
 }

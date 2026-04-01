@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -42,6 +43,9 @@ public class CookieOrder {
     @Column(nullable = false, length = 500)
     private String deliveryAddress;
 
+    @Column(nullable = false)
+    private LocalDate deliveryDate;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
@@ -54,6 +58,15 @@ public class CookieOrder {
 
     @Column(nullable = false)
     private String customerEmail;
+
+    @Column(nullable = false)
+    private String paymentMethod;
+
+    @Column(nullable = false)
+    private String cardholderName;
+
+    @Column(nullable = false)
+    private String cardLastFour;
 
     public CookieOrder() {
     }
@@ -118,6 +131,14 @@ public class CookieOrder {
         this.deliveryAddress = deliveryAddress;
     }
 
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
@@ -143,10 +164,34 @@ public class CookieOrder {
     }
 
     public String getCustomerEmail() {
-    return customerEmail;
+        return customerEmail;
     }
 
     public void setCustomerEmail(String customerEmail) {
-    this.customerEmail = customerEmail;
-}
+        this.customerEmail = customerEmail;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getCardholderName() {
+        return cardholderName;
+    }
+
+    public void setCardholderName(String cardholderName) {
+        this.cardholderName = cardholderName;
+    }
+
+    public String getCardLastFour() {
+        return cardLastFour;
+    }
+
+    public void setCardLastFour(String cardLastFour) {
+        this.cardLastFour = cardLastFour;
+    }
 }

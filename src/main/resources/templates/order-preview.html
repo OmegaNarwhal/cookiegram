@@ -3,57 +3,228 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Preview Order - CookieGram</title>
+  <title>Order Preview - CookieGram</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --cg-orange:#f97316;
+      --cg-brown:#4b2e2b;
+      --cg-cream:#fff7ed;
+    }
+
+    body{
+      background: linear-gradient(to bottom right, #fffaf5, #ffffff);
+    }
+
+    .brand{
+      color: var(--cg-orange);
+    }
+
+    .preview-card{
+      border: 0;
+      border-radius: 1.25rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      background: #fff;
+    }
+
+    .hero-card{
+      background: linear-gradient(135deg, #fff7ed, #ffffff);
+    }
+
+    .section-title{
+      color: var(--cg-brown);
+      font-weight: 700;
+    }
+
+    .info-box{
+      background: #fffaf5;
+      border: 1px solid #fde7d3;
+      border-radius: 1rem;
+      padding: 1rem;
+      height: 100%;
+    }
+
+    .total-box{
+      background: var(--cg-cream);
+      border: 1px solid #fed7aa;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+
+    .label{
+      font-weight: 600;
+      color: #555;
+    }
+
+    .value{
+      color: #222;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container my-5">
+<nav class="navbar navbar-expand bg-white border-bottom">
+  <div class="container py-2">
+    <a class="navbar-brand fw-bold" href="/">Cookie<span class="brand">Gram</span></a>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-dark btn-sm" th:href="@{/customer}">Dashboard</a>
+      <form th:action="@{/logout}" method="post" class="m-0">
+        <button class="btn btn-warning btn-sm fw-semibold" type="submit">Logout</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-4">
+
+  <div class="preview-card hero-card p-4 mb-4">
+    <h1 class="display-6 fw-bold mb-2" style="color:var(--cg-brown);">Review Your Order</h1>
+    <p class="lead text-muted mb-0">Please confirm your cookie order details before placing it.</p>
+  </div>
+
   <div class="row g-4">
-    <div class="col-lg-6">
-      <div class="card shadow-sm">
-        <div class="card-body p-4">
-          <h1 class="fw-bold mb-3">Order Preview</h1>
 
-          <table class="table">
-            <tr><th>Cookie</th><td th:text="${orderForm.cookieType.displayName}"></td></tr>
-            <tr><th>Email</th><td th:text="${orderForm.customerEmail}"></td></tr> 
-            <tr><th>Recipient</th><td th:text="${orderForm.recipientName}"></td></tr>
-            <tr><th>Message</th><td th:text="${orderForm.customMessage}"></td></tr>
-            <tr><th>Sprinkles</th><td th:text="${orderForm.sprinkles ? 'Yes' : 'No'}"></td></tr>
-            <tr><th>Quantity</th><td th:text="${orderForm.quantity}"></td></tr>
-            <tr><th>Address</th><td th:text="${orderForm.deliveryAddress}"></td></tr>
-            <tr class="table-warning fw-bold"><th>Total</th><td th:text="'$' + ${totalPrice}"></td></tr>
-          </table>
+    <div class="col-lg-8">
+      <div class="preview-card p-4 mb-4">
+        <h3 class="section-title mb-3">Order Details</h3>
 
-          <form th:action="@{/customer/orders/place}" method="post" class="d-flex gap-2">
-            <input type="hidden" name="cookieType" th:value="${orderForm.cookieType}">
-            <input type="hidden" name="customMessage" th:value="${orderForm.customMessage}">
-            <input type="hidden" name="sprinkles" th:value="${orderForm.sprinkles}">
-            <input type="hidden" name="quantity" th:value="${orderForm.quantity}">
-            <input type="hidden" name="recipientName" th:value="${orderForm.recipientName}">
-            <input type="hidden" name="deliveryAddress" th:value="${orderForm.deliveryAddress}">
-            <input type="hidden" name="customerEmail" th:value="${orderForm.customerEmail}"> 
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Cookie Type</div>
+              <div class="value" th:text="${orderForm.cookieType.displayName}">Chocolate Chip</div>
+            </div>
+          </div>
 
-            <button type="submit" class="btn btn-warning fw-semibold">Place Order</button>
-            <a href="/customer/orders/new" class="btn btn-outline-dark">Edit Order</a>
-          </form>
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Quantity</div>
+              <div class="value" th:text="${orderForm.quantity}">1</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Custom Message</div>
+              <div class="value" th:text="${orderForm.customMessage}">Happy Birthday Sarah!</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Sprinkles</div>
+              <div class="value" th:text="${orderForm.sprinkles ? 'Yes' : 'No'}">No</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Recipient Name</div>
+              <div class="value" th:text="${orderForm.recipientName}">Sarah Carter</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Customer Email</div>
+              <div class="value" th:text="${orderForm.customerEmail}">you@example.com</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Delivery Date</div>
+              <div class="value" th:text="${orderForm.deliveryDate}">2026-04-05</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Delivery Address</div>
+              <div class="value" th:text="${orderForm.deliveryAddress}">123 Main Street</div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-lg-6">
-      <div class="card shadow-sm">
-        <div class="card-body p-4">
-          <h4 class="fw-bold mb-3">Cookie Message Preview</h4>
-          <div class="border rounded p-5 bg-light text-center">
-            <div class="fw-bold fs-4 mb-2" th:text="${orderForm.cookieType.displayName}"></div>
-            <div class="display-6 fw-bold text-warning" th:text="${orderForm.customMessage}"></div>
-            <div class="text-muted mt-3" th:text="${orderForm.sprinkles ? 'With sprinkles' : 'No sprinkles'}"></div>
+      <div class="preview-card p-4">
+        <h3 class="section-title mb-3">Payment Preview</h3>
+        <p class="text-muted">Mock payment gateway preview for demonstration purposes.</p>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Payment Method</div>
+              <div class="value" th:text="${orderForm.paymentMethod}">Credit Card</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Cardholder Name</div>
+              <div class="value" th:text="${orderForm.cardholderName}">John Smith</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Card Number</div>
+              <div class="value"
+                   th:text="${'**** **** **** ' + #strings.substring(orderForm.mockCardNumber, orderForm.mockCardNumber.length() - 4, orderForm.mockCardNumber.length())}">
+                **** **** **** 1111
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-box">
+              <div class="label">Expiry Date</div>
+              <div class="value" th:text="${orderForm.expiryDate}">12/27</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="col-lg-4">
+      <div class="preview-card p-4">
+        <h3 class="section-title mb-3">Order Summary</h3>
+
+        <div class="total-box mb-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Base Order</span>
+            <span th:text="'$' + ${totalPrice}">$18.99</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between fw-bold fs-5">
+            <span>Total</span>
+            <span th:text="'$' + ${totalPrice}">$18.99</span>
+          </div>
+        </div>
+
+        <form th:action="@{/customer/orders/place}" method="post">
+          <input type="hidden" name="cookieType" th:value="${orderForm.cookieType}">
+          <input type="hidden" name="customMessage" th:value="${orderForm.customMessage}">
+          <input type="hidden" name="sprinkles" th:value="${orderForm.sprinkles}">
+          <input type="hidden" name="quantity" th:value="${orderForm.quantity}">
+          <input type="hidden" name="recipientName" th:value="${orderForm.recipientName}">
+          <input type="hidden" name="customerEmail" th:value="${orderForm.customerEmail}">
+          <input type="hidden" name="deliveryAddress" th:value="${orderForm.deliveryAddress}">
+          <input type="hidden" name="deliveryDate" th:value="${orderForm.deliveryDate}">
+          <input type="hidden" name="paymentMethod" th:value="${orderForm.paymentMethod}">
+          <input type="hidden" name="cardholderName" th:value="${orderForm.cardholderName}">
+          <input type="hidden" name="mockCardNumber" th:value="${orderForm.mockCardNumber}">
+          <input type="hidden" name="expiryDate" th:value="${orderForm.expiryDate}">
+          <input type="hidden" name="cvv" th:value="${orderForm.cvv}">
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-warning btn-lg fw-semibold">Place Order</button>
+            <a th:href="@{/customer/orders/new}" class="btn btn-outline-secondary">Back to Edit</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </div>
 </div>
 

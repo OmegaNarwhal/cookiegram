@@ -40,10 +40,20 @@ public class CookieOrderService {
         order.setQuantity(form.getQuantity());
         order.setRecipientName(form.getRecipientName());
         order.setDeliveryAddress(form.getDeliveryAddress());
+        order.setDeliveryDate(form.getDeliveryDate());
         order.setTotalPrice(calculatePrice(form));
         order.setStatus(OrderStatus.PENDING);
         order.setCreatedAt(LocalDateTime.now());
-        
+
+        order.setPaymentMethod(form.getPaymentMethod());
+        order.setCardholderName(form.getCardholderName());
+
+        String cardNumber = form.getMockCardNumber() == null ? "" : form.getMockCardNumber().replaceAll("\\s+", "");
+        String lastFour = cardNumber.length() >= 4
+                ? cardNumber.substring(cardNumber.length() - 4)
+                : cardNumber;
+
+        order.setCardLastFour(lastFour);
 
         return cookieOrderRepository.save(order);
     }
@@ -53,6 +63,29 @@ public class CookieOrderService {
     }
 
     public List<CookieOrder> getAllOrders() {
+        return cookieOrderRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    public List<CookieOrder> filterOrders(OrderStatus status, String customerUsername) {
+        boolean hasStatus = status != null;
+        boolean hasUsername = customerUsername != null && !customerUsername.trim().isEmpty();
+
+        if (hasStatus && hasUsername) {
+            return cookieOrderRepository
+                    .findByStatusAndCustomerUsernameContainingIgnoreCaseOrderByCreatedAtDesc(
+                            status, customerUsername.trim()
+                    );
+        }
+
+        if (hasStatus) {
+            return cookieOrderRepository.findByStatusOrderByCreatedAtDesc(status);
+        }
+
+        if (hasUsername) {
+            return cookieOrderRepository
+                    .findByCustomerUsernameContainingIgnoreCaseOrderByCreatedAtDesc(customerUsername.trim());
+        }
+
         return cookieOrderRepository.findAllByOrderByCreatedAtDesc();
     }
 

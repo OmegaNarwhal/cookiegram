@@ -1,62 +1,365 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CookieGram — Log in</title>
-  <link rel="stylesheet" th:href="@{/css/auth.css}">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Log in - CookieGram</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
-    .error { color: #b91c1c; font-size: 0.9rem; margin-bottom: 1rem; }
-    .success { color: #166534; font-size: 0.95rem; margin-bottom: 1rem; }
-    .field { margin-bottom: 1rem; }
-    .field input { width: 100%; padding: 0.75rem; }
-    .btn { width: 100%; padding: 0.9rem; }
+    :root{
+      --cg-orange:#f97316;
+      --cg-orange-dark:#ea580c;
+      --cg-brown:#4b2e2b;
+      --cg-cream:#fff7ed;
+      --cg-text:#1f2937;
+      --cg-muted:#6b7280;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      min-height:100vh;
+      margin:0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--cg-text);
+      background:
+        radial-gradient(circle at top left, rgba(253,224,71,0.55), transparent 35%),
+        radial-gradient(circle at top right, rgba(251,207,232,0.65), transparent 35%),
+        linear-gradient(135deg, #fffaf5 0%, #fff7ed 45%, #fff1f2 100%);
+    }
+
+    .page-shell{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px 16px;
+    }
+
+    .login-wrap{
+      width:100%;
+      max-width:1100px;
+    }
+
+    .login-card{
+      border:none;
+      border-radius:28px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.82);
+      box-shadow:0 24px 60px rgba(75,46,43,0.12);
+    }
+
+    .hero-side{
+      padding:56px 48px;
+      background:
+        linear-gradient(160deg, rgba(255,255,255,0.65), rgba(255,247,237,0.95)),
+        radial-gradient(circle at top right, rgba(249,115,22,0.14), transparent 30%);
+      min-height:100%;
+    }
+
+    .form-side{
+      padding:48px 40px;
+      background:rgba(255,255,255,0.94);
+    }
+
+    .brand-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(255,247,237,0.95);
+      border:1px solid rgba(249,115,22,0.2);
+      color:var(--cg-orange-dark);
+      font-size:.95rem;
+      font-weight:700;
+      margin-bottom:22px;
+    }
+
+    .brand-title{
+      font-size:3rem;
+      line-height:1.05;
+      font-weight:800;
+      color:#111827;
+      margin-bottom:16px;
+    }
+
+    .brand-copy{
+      font-size:1.05rem;
+      line-height:1.7;
+      color:var(--cg-muted);
+      max-width:500px;
+      margin-bottom:28px;
+    }
+
+    .feature-list{
+      display:grid;
+      gap:14px;
+      max-width:470px;
+    }
+
+    .feature-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 16px;
+      background:rgba(255,255,255,0.78);
+      border:1px solid rgba(249,115,22,0.12);
+      border-radius:18px;
+    }
+
+    .feature-icon{
+      width:36px;
+      height:36px;
+      flex:0 0 36px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      background:var(--cg-cream);
+      color:var(--cg-orange-dark);
+      font-size:1rem;
+    }
+
+    .brand-name{
+      color:var(--cg-orange);
+    }
+
+    .top-brand{
+      font-weight:800;
+      font-size:1rem;
+      color:var(--cg-brown);
+      margin-bottom:18px;
+    }
+
+    .form-title{
+      font-size:2rem;
+      font-weight:800;
+      margin-bottom:8px;
+      color:#111827;
+    }
+
+    .form-subtitle{
+      color:var(--cg-muted);
+      margin-bottom:28px;
+    }
+
+    .form-label{
+      font-weight:700;
+      color:#374151;
+      margin-bottom:8px;
+    }
+
+    .form-control{
+      border-radius:14px;
+      min-height:52px;
+      border:1px solid #e5e7eb;
+      padding:12px 16px;
+      box-shadow:none !important;
+    }
+
+    .form-control:focus{
+      border-color:#fdba74;
+      box-shadow:0 0 0 4px rgba(249,115,22,0.12) !important;
+    }
+
+    .btn-login{
+      min-height:52px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg, var(--cg-orange), var(--cg-orange-dark));
+      color:#fff;
+      font-weight:800;
+      box-shadow:0 12px 24px rgba(249,115,22,0.22);
+    }
+
+    .btn-login:hover{
+      color:#fff;
+      opacity:.98;
+    }
+
+    .helper-box{
+      margin-top:22px;
+      padding:16px 18px;
+      border-radius:16px;
+      background:#fffaf5;
+      border:1px solid #fed7aa;
+    }
+
+    .helper-box h6{
+      margin:0 0 8px 0;
+      font-weight:800;
+      color:var(--cg-brown);
+    }
+
+    .helper-box p{
+      margin:0;
+      color:var(--cg-muted);
+      font-size:.95rem;
+      line-height:1.6;
+    }
+
+    .helper-box code{
+      background:#fff;
+      padding:2px 6px;
+      border-radius:8px;
+      color:var(--cg-orange-dark);
+      font-size:.92em;
+    }
+
+    .auth-links{
+      margin-top:20px;
+      text-align:center;
+      font-size:.95rem;
+    }
+
+    .auth-links a{
+      color:var(--cg-orange-dark);
+      font-weight:700;
+      text-decoration:none;
+    }
+
+    .auth-links a:hover{
+      text-decoration:underline;
+    }
+
+    .alert{
+      border:none;
+      border-radius:14px;
+      padding:14px 16px;
+      margin-bottom:18px;
+    }
+
+    @media (max-width: 991.98px){
+      .hero-side{
+        padding:36px 24px 24px;
+      }
+
+      .form-side{
+        padding:32px 24px 36px;
+      }
+
+      .brand-title{
+        font-size:2.35rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="auth-wrap">
-    <section class="brand">
-      <div class="badge">🍪 <span>Welcome back to CookieGram</span></div>
-      <h1>Log in</h1>
-      <p>Sign in with your email to place and manage cookiegram orders.</p>
-    </section>
 
-    <section class="card">
-      <h2>Account access</h2>
-      <p class="sub">Enter your email and password.</p>
+<div class="page-shell">
+  <div class="login-wrap">
+    <div class="card login-card">
+      <div class="row g-0">
 
-      <div th:if="${param.registered}" class="success">
-        Account created successfully. Please log in.
-      </div>
+        <div class="col-lg-7">
+          <div class="hero-side">
+            <div class="top-brand">Cookie<span class="brand-name">Gram</span></div>
 
-      <div th:if="${param.error}" class="error">
-        Invalid email or password.
-      </div>
+            <div class="brand-badge">🍪 Welcome back to CookieGram</div>
 
-      <div th:if="${param.logout}" class="success">
-        You have been logged out.
-      </div>
+            <h1 class="brand-title">Log in and manage sweet deliveries.</h1>
 
-      <form th:action="@{/login}" method="post">
-        <div class="field">
-          <label for="username">Email</label>
-          <input type="email" id="username" name="username" placeholder="you@example.com" required>
+            <p class="brand-copy">
+              Sign in to place cookie orders, track delivery progress, and manage your account in one polished dashboard.
+            </p>
+
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">🧾</div>
+                <div>
+                  <strong>Track your orders</strong><br>
+                  <span class="text-muted">View your order history and current order statuses.</span>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon">🚚</div>
+                <div>
+                  <strong>Manage delivery details</strong><br>
+                  <span class="text-muted">Review addresses, recipient details, and delivery dates.</span>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon">💳</div>
+                <div>
+                  <strong>Use the mock checkout</strong><br>
+                  <span class="text-muted">Experience a realistic payment flow for your prototype.</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="••••••••" required>
+        <div class="col-lg-5">
+          <div class="form-side">
+            <h2 class="form-title">Account access</h2>
+            <p class="form-subtitle">Enter your email and password to continue.</p>
+
+            <div th:if="${param.error}" class="alert alert-danger">
+              Invalid email or password.
+            </div>
+
+            <div th:if="${param.logout}" class="alert alert-success">
+              You have been logged out successfully.
+            </div>
+
+            <div th:if="${param.registered}" class="alert alert-success">
+              Account created successfully. Please log in.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+              <div class="mb-3">
+                <label for="username" class="form-label">Email</label>
+                <input
+                  type="email"
+                  id="username"
+                  name="username"
+                  class="form-control"
+                  placeholder="you@example.com"
+                  required>
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  required>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-login">Log in</button>
+              </div>
+            </form>
+
+            <div class="helper-box">
+              <h6>Demo accounts</h6>
+              <p>
+                Employee: <code>employee@cookiegram.com</code> / <code>pass</code><br>
+                Admin: <code>admin@cookiegram.com</code> / <code>pass</code>
+              </p>
+            </div>
+
+            <div class="auth-links">
+              <a th:href="@{/register}">Create account</a>
+              <span class="text-muted"> · </span>
+              <a th:href="@{/forgot-password}">Forgot password?</a>
+            </div>
+          </div>
         </div>
 
-        <button class="btn" type="submit">Log in</button>
-      </form>
-
-      <div class="footer" style="margin-top: 1rem;">
-        <a class="link" th:href="@{/register}">Create account</a>
-        <span> · </span>
-        <a class="link" th:href="@{/forgot-password}">Forgot password?</a>
       </div>
-    </section>
+    </div>
   </div>
+</div>
+
 </body>
 </html>
