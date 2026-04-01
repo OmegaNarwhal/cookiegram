@@ -29,3 +29,6 @@ jobs:
 
       - name: Build app (skip tests)
         run: ./mvnw clean package -DskipTests
+
+      - name: Build Docker image
+        run: docker build -t cookiegram-app .
