@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class CookieOrderServiceTest {
@@ -104,4 +105,50 @@ class CookieOrderServiceTest {
 
         assertTrue(ex.getMessage().contains("99"));
     }
+
+    @Test
+void filterOrders_shouldReturnStatusFilteredOrders() {
+    when(cookieOrderRepository.findByStatusOrderByCreatedAtDesc(OrderStatus.PENDING))
+            .thenReturn(java.util.List.of());
+
+    var results = cookieOrderService.filterOrders(OrderStatus.PENDING, null);
+
+    assertNotNull(results);
+    verify(cookieOrderRepository).findByStatusOrderByCreatedAtDesc(OrderStatus.PENDING);
+}
+
+@Test
+void filterOrders_shouldReturnUsernameFilteredOrders() {
+    when(cookieOrderRepository.findByCustomerUsernameContainingIgnoreCaseOrderByCreatedAtDesc("customer"))
+            .thenReturn(java.util.List.of());
+
+    var results = cookieOrderService.filterOrders(null, "customer");
+
+    assertNotNull(results);
+    verify(cookieOrderRepository)
+            .findByCustomerUsernameContainingIgnoreCaseOrderByCreatedAtDesc("customer");
+}
+
+@Test
+void filterOrders_shouldReturnStatusAndUsernameFilteredOrders() {
+    when(cookieOrderRepository.findByStatusAndCustomerUsernameContainingIgnoreCaseOrderByCreatedAtDesc(
+            OrderStatus.READY, "customer"))
+            .thenReturn(java.util.List.of());
+
+    var results = cookieOrderService.filterOrders(OrderStatus.READY, "customer");
+
+    assertNotNull(results);
+    verify(cookieOrderRepository)
+            .findByStatusAndCustomerUsernameContainingIgnoreCaseOrderByCreatedAtDesc(OrderStatus.READY, "customer");
+}
+
+@Test
+void filterOrders_shouldReturnAllOrdersWhenNoFilters() {
+    when(cookieOrderRepository.findAllByOrderByCreatedAtDesc()).thenReturn(java.util.List.of());
+
+    var results = cookieOrderService.filterOrders(null, null);
+
+    assertNotNull(results);
+    verify(cookieOrderRepository).findAllByOrderByCreatedAtDesc();
+}
 }

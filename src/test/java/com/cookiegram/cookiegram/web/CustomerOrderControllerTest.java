@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
@@ -51,27 +52,33 @@ class CustomerOrderControllerTest {
     }
 
     @Test
-    void previewOrder_shouldReturnPreviewView_whenValid() throws Exception {
-        Authentication auth = new TestingAuthenticationToken("customer", "pass", "ROLE_CUSTOMER");
+void previewOrder_shouldReturnPreviewView_whenValid() throws Exception {
+    Authentication auth = new TestingAuthenticationToken("customer", "pass", "ROLE_CUSTOMER");
 
-        when(cookieOrderService.calculatePrice(any(CookieOrderForm.class)))
-                .thenReturn(new BigDecimal("18.99"));
+    when(cookieOrderService.calculatePrice(any(CookieOrderForm.class)))
+            .thenReturn(new BigDecimal("18.99"));
 
-        mockMvc.perform(post("/customer/orders/preview")
-                        .with(authentication(auth))
-                        .with(csrf())
-                        .param("cookieType", "CHOCOLATE_CHIP")
-                        .param("customMessage", "Happy Birthday")
-                        .param("sprinkles", "false")
-                        .param("quantity", "1")
-                        .param("recipientName", "Sarah")
-                        .param("deliveryAddress", "123 Main St")
-                        .param("customerEmail", "test@test.com"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("order-preview"))
-                .andExpect(model().attributeExists("orderForm"))
-                .andExpect(model().attributeExists("totalPrice"));
-    }
+    mockMvc.perform(post("/customer/orders/preview")
+                    .with(authentication(auth))
+                    .with(csrf())
+                    .param("cookieType", "CHOCOLATE_CHIP")
+                    .param("customMessage", "Happy Birthday")
+                    .param("sprinkles", "false")
+                    .param("quantity", "1")
+                    .param("recipientName", "Sarah")
+                    .param("deliveryAddress", "123 Main St")
+                    .param("customerEmail", "test@test.com")
+                    .param("deliveryDate", "2026-04-10")
+                    .param("paymentMethod", "Credit Card")
+                    .param("cardholderName", "John Smith")
+                    .param("mockCardNumber", "4111111111111111")
+                    .param("expiryDate", "12/27")
+                    .param("cvv", "123"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("order-preview"))
+            .andExpect(model().attributeExists("orderForm"))
+            .andExpect(model().attributeExists("totalPrice"));
+}
 
     @Test
     void previewOrder_shouldReturnFormAgain_whenInvalid() throws Exception {
@@ -139,4 +146,40 @@ class CustomerOrderControllerTest {
                 .andExpect(view().name("customer-orders"))
                 .andExpect(model().attributeExists("orders"));
     }
+
+    @Test
+void placeOrder_shouldReturnConfirmationWithEmailSentFalse_whenEmailFails() throws Exception {
+    Authentication auth = new TestingAuthenticationToken("customer", "pass", "ROLE_CUSTOMER");
+
+    CookieOrder savedOrder = new CookieOrder();
+    savedOrder.setCustomerUsername("customer");
+    savedOrder.setCustomerEmail("test@test.com");
+    savedOrder.setCookieType(CookieType.CHOCOLATE_CHIP);
+    savedOrder.setCustomMessage("Happy Birthday");
+    savedOrder.setSprinkles(false);
+    savedOrder.setQuantity(1);
+    savedOrder.setRecipientName("Sarah");
+    savedOrder.setDeliveryAddress("123 Main St");
+    savedOrder.setTotalPrice(new BigDecimal("18.99"));
+    savedOrder.setStatus(OrderStatus.PENDING);
+
+    when(cookieOrderService.placeOrder(any(CookieOrderForm.class), eq("customer")))
+            .thenReturn(savedOrder);
+
+    doThrow(new RuntimeException("Mail failed")).when(emailService).sendOrderConfirmationEmail(savedOrder);
+
+    mockMvc.perform(post("/customer/orders/place")
+                    .with(authentication(auth))
+                    .with(csrf())
+                    .param("cookieType", "CHOCOLATE_CHIP")
+                    .param("customMessage", "Happy Birthday")
+                    .param("sprinkles", "false")
+                    .param("quantity", "1")
+                    .param("recipientName", "Sarah")
+                    .param("deliveryAddress", "123 Main St")
+                    .param("customerEmail", "test@test.com"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("order-confirmation"))
+            .andExpect(model().attribute("emailSent", false));
+}
 }
